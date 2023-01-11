@@ -39,6 +39,9 @@ SELECT COUNT(district)
 FROM address;
 -- 603
 
+select count(distinct district) from address;
+--378
+
 -- 7. What film has the most actors in it? (use film_actor table and get film_id)
 SELECT COUNT(film_id), actor_id
 FROM film_actor
@@ -48,6 +51,11 @@ HAVING COUNT(film_id) >35;
 -- I didnt understand this question so i just looked to see how many films each actor was in 
 -- actor_id 107 did
 
+-- this is REALLY close but the logic is just tilted slightly-
+SELECT film_id, count(*)
+FROM film_actor
+GROUP BY film_id
+ORDER BY COUNT DESC;
 
 -- 8. From store_id 1, how many customers have a last name ending with ‘es’? (use customer table)
 
@@ -57,6 +65,10 @@ WHERE last_name LIKE '%es'
 GROUP BY first_name, last_name;
 -- 20 something, didnt know how count the where??
 
+SELECT count(last_name)
+FROM customer
+WHERE store_id = 1 and last_name LIKE '%es';
+
 
 -- 9. How many payment amounts (4.99, 5.99, etc.) had a number of rentals above 250 for customers
 -- with ids between 380 and 430? (use group by and having > 250)
@@ -65,6 +77,12 @@ FROM payment
 WHERE customer_id BETWEEN 380 AND 430
 GROUP BY customer_id, amount
 HAVING amount > 4.99;
+
+SELECT count(rental_id), amount
+FROM payment
+WHERE customer_id >= 380 and customer_id <= 430
+GROUP BY amount
+HAVING count(rental_id) > 250;
 
 --  I did see a column for how many times it got rented so I got confused with this one
 
@@ -81,4 +99,8 @@ FROM film
 GROUP BY title, rating
 -- could not figure out the second part to it 
 
+SELECT rating, COUNT(*)
+FROM film
+GROUP BY rating
+ORDER BY count DESC;
 
